@@ -1,64 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<div align="center">
+  <h1>LARAVEL NOTIFICATIONS</h1>
+  <p>Claudinei Ferreira de Jesus</p>
+</div>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<div align="left">
+    <ul>
+        <li><a href="#sobre">Sobre</a></li>        
+        <li><a href="#instalação-do-laravel">Instalação do Laravel</a></li>
+        <li><a href="#posts-e-comentários">Posts e Comentários</a></li>
+        <li><a href="#notificações-por-e-mail">Notificações por E-mail</a></li>
+        <li><a href="#notificações-por-database">Notificações por Database</a></li>
+        <li><a href="#gerenciar-notificações-vuejs">Gerenciar Notificações VueJS</a></li>
+        <li><a href="#real-time">Real-time</a></li>
+        <li><a href="#referência-de-estudos">Referência de Estudos</a></li>
+        <li><a href="#autor">Autor</a></li>
+    </ul>
+</div>
 
-## About Laravel
+# Sobre
+Este é um projeto de estudos para conhecimento sobre notificações no Laravel.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Instalação do Laravel
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+composer create-project --prefer-dist laravel/laravel notifications
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Configurar arquivo .env
+O arquivo .env encontra se na raiz do projeto Laravel.
 
-## Learning Laravel
+### Nome do Projeto
+Deixe o nome do projeto como a seguir:
+~~~~env
+APP_NAME="Estudos com Notificações"
+~~~~
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Url do Projeto
+No meu caso criei um virtual host que aponta para o seguinte endereço.
+~~~~env
+APP_URL=http://notifications.test
+~~~~
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Banco de Dados
+Crie um banco de dados com o nome "notifications". Com charset "utf8mb4_unicode_ci" <br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Configure as informações do banco no arquivo .env, localizado na raiz do projeto
+```bash
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=notifications
+DB_USERNAME=root
+DB_PASSWORD=#senha-do-banco-de-dados
+```
 
-### Premium Partners
+## Configurar AppServiceProvider
+Vamos configurar a quantidade máxima de caracteres nos campos do banco de dados, quando não informamos um valor padrão na migration. <br>
+Para isso acesse o arquivo: "app/Providers/AppServiceProvider.php" e no metódo boot adicione o código a seguir:
+~~~php
+use Illuminate\Support\Facades\Schema;
+.
+.
+.
+public function boot()
+{
+    Schema::defaultStringLength(191);
+}
+~~~
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Configurar Timezone do projeto
+- Acesse o arquivo "config/app.php"
+- Localize a config "timezone" e altere como a seguir:
+~~~~php
+'timezone' => 'America/Sao_Paulo'
+~~~~ 
 
-## Contributing
+## Criação de Models e Migrations: Posts
+Pelo terminal rode os comandos a partir da pasta do seu projeto. <br>
+Este comando criará a model de Post, bem como a migration de post
+```bash
+php artisan make:model Post -m
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Acesse o arquivo de migration da tabela de posts: "database/migrations/2022_04_24_120034_create_posts_table.php" <br>
+O nome da migration de post pode variar de acordo com a data que você fez a criação. <br>
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+~~~php
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('user_id');
+    $table->string('title')->unique();
+    $table->text('body');
+    $table->timestamps();
 
-## Security Vulnerabilities
+    $table->foreign('user_id')
+        ->references('id')
+        ->on('users')
+        ->onDelete('cascade');
+});
+~~~
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Vamos rodar o camando para criar as tabelas no banco de dados:
+```bash
+php artisan migrate
+```
+Se tudo correr corretamente, seu banco de dados "notifications" deverá ter agora as tabelas que criamos com o comando de migrate. As tabelas são essas:
+- filed_jobs
+- migrations
+- password_resets
+- personal_access_tokens
+- posts
+- users
 
-## License
+# Posts e Comentários
+>Estudando...
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Notificações por E-mail
+>Estudando...
+
+
+
+# Notificações por Database
+>Estudando...
+
+
+
+# Gerenciar Notificações Vue.js
+>Estudando...
+
+
+
+# Real-time
+>Estudando...
+
+
+
+# Referência de Estudos
+[Especializa Ti](https://especializati.com.br/)
+
+
+# Autor
+[Claudinei Ferreira de Jesus](https://github.com/claudinei-ferreira)
+
+
